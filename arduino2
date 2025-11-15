@@ -1,30 +1,40 @@
-
-int pinNumber = 7;
-char *command = "REQUEST:BATHROOM";
+// Pin assignments
+int ledPins[5] = {7, 8, 9, 10, 11};
 
 void setup() {
-  pinMode(pinNumber, OUTPUT); // Replace 'pinNumber' with the actual digital pin you are using
-  Serial.begin(9600); // Start serial communication at 9600 baud
+  Serial.begin(9600);
+
+  // Set all LED pins as output
+  for (int i = 0; i < 5; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW);
+  }
 }
 
 void loop() {
-  // .// digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
-  // delay(5000);
-  // digitalWrite(pinNumber, LOW);  // Turn the pin LOW
-  // delay(5000);
-  if (incomingString.equals(command)) {
-      Serial.println("Command entered");
-      digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
-      delay(1000);
-      digitalWrite(pinNumber, LOW);  // Turn the pin LOW
-      delay(1000);
-      digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
-      delay(1000);
-      digitalWrite(pinNumber, LOW); // Turn the pin HIGH
-      delay(1000);
-      digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
-      delay(1000);
-      digitalWrite(pinNumber, LOW); // Turn the pin HIGH
-    }
+  if (Serial.available() > 0) {
+    String incoming = Serial.readStringUntil('\n');
+    incoming.trim();
 
+    Serial.print("Received: ");
+    Serial.println(incoming);
+
+    // Only accept commands starting with R
+    if (incoming.startsWith("R")) {
+      
+      // Extract number after R
+      int index = incoming.substring(1).toInt() - 1;
+
+      // Validate range (R1–R5 → index 0–4)
+      if (index >= 0 && index < 5) {
+        Serial.print("Turning ON LED for: ");
+        Serial.println(incoming);
+
+        // Turn on the selected LED
+        digitalWrite(ledPins[index], HIGH);
+        delay(1000);
+        digitalWrite(ledPins[index], LOW);
+      }
+    }
+  }
 }
