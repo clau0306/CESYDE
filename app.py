@@ -131,20 +131,18 @@ def dashboard_data():
         {
             "request_text": req['request'],
             "timestamp_str": format_timestamp(req['timestamp']),
-            # Assign urgency based on request type
             "urgency": "high" if req['request'] == "HELP! Emergency" else "medium"
         }
         for req in history[-10:]
     ]
 
-    # --- THIS IS THE FIX ---
-    # The old code had hardcoded placeholders here.
-    # This new version sends the *real* AI data directly.
+    # --- THIS IS THE CRITICAL PART ---
+    # It must return the variables, not old hardcoded data.
     return jsonify({
-        "prioritized_tasks": prioritized_tasks, # <-- FIX 1: Fixed typo
+        "prioritized_tasks": prioritized_tasks, # Make sure this key is correct
         "request_feed": request_feed,
-        "ai_insights": ai_insights,             # <-- FIX 2: Now uses real AI insights
-        "wellbeing_summary": wellbeing_summary, # <-- FIX 3: Now uses real AI summary
+        "ai_insights": ai_insights,
+        "wellbeing_summary": wellbeing_summary,
         "latest_led_message": latest_led_message
     })
 

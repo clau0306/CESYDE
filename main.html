@@ -172,10 +172,10 @@
             /** * UPDATED: Helper function to get urgency colors for Tailwind
              * @param {string} priority - e.g., "High", "Medium", "Low"
              */
-            function getUrgencyClasses(priority) {
+             function getUrgencyClasses(priority) {
                 if (!priority) return 'border-l-4 border-gray-400 bg-gray-50';
                 
-                // Use 'priority' (from new JSON) instead of 'priorityLevel'
+                // --- THIS MUST READ 'priority' ---
                 switch (priority.toLowerCase()) {
                     case 'high':
                         return 'border-l-4 border-red-600 bg-red-50 text-red-900 font-medium';
@@ -189,48 +189,42 @@
             }
 
             /**
-             * UPDATED: Updates the "Prioritized Tasks" list.
-             * @param {Array} tasks - e.g., [{request_type: "Bathroom Request", priority: "high"}, ...]
+             * Updates the "Prioritized Tasks" list.
              */
             function updateTasks(tasks) {
-                // Ensure tasks is an array, even if null or undefined from the API
                 const currentTasks = Array.isArray(tasks) ? tasks : [];
 
-                // --- UPDATED: Text-to-Speech Logic ---
-                // Find tasks that are in the new list but were not in the previous list.
+                // --- Text-to-Speech Logic ---
                 const newTasks = currentTasks.filter(newTask => 
                     !previousTasks.some(prevTask => 
-                        // Compare 'request_type' and 'priority'
+                        // --- THIS MUST READ 'request_type' and 'priority' ---
                         prevTask.request_type === newTask.request_type && 
                         prevTask.priority === newTask.priority
                     )
                 );
 
                 if (newTasks.length > 0) {
-                    // Announce the *highest priority* (first) new task.
                     const topNewTask = newTasks[0];
-                    // Use 'priority' and 'request_type'
+                    // --- THIS MUST READ 'priority' and 'request_type' ---
                     const priority = topNewTask.priority || 'new';
                     const textToSpeak = `New ${priority} priority task: ${topNewTask.request_type}`;
                     speakText(textToSpeak);
                 }
                 
-                // Update the previous tasks list for the next check
                 previousTasks = currentTasks;
                 // --- End of TTS Logic ---
 
-
-                taskList.innerHTML = ''; // Clear the skeleton loader
+                taskList.innerHTML = ''; 
                 if (currentTasks.length === 0) {
                     taskList.innerHTML = '<li class="text-gray-500 italic">No tasks pending.</li>';
                     return;
                 }
                 currentTasks.forEach(task => {
                     const li = document.createElement('li');
-                    // Use 'request_type' for display
-                    li.textContent = task.request_type;
-                    // Apply urgency styling based on 'priority'
-                    li.className = `p-3 rounded-r-md ${getUrgencyClasses(task.priority)}`;
+                    // --- THIS MUST READ 'task.request_type' ---
+                    li.textContent = task.request_type; 
+                    // --- THIS MUST READ 'task.priority' ---
+                    li.className = `p-3 rounded-r-md ${getUrgencyClasses(task.priority)}`; 
                     taskList.appendChild(li);
                 });
             }
