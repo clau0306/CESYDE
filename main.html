@@ -15,6 +15,7 @@
             font-family: 'Inter', sans-serif;
         }
 
+
         /* Custom scrollbar for a cleaner look in feed/task lists */
         .card-content::-webkit-scrollbar {
             width: 6px;
@@ -34,14 +35,17 @@
 </head>
 <body class="bg-slate-100 p-4 md:p-8">
 
+
     <h1 class="text-3xl md:text-4xl font-bold text-center text-indigo-700 mb-10">Patient Wellbeing Dashboard</h1>
+
 
     <!-- Main grid layout for the dashboard -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-        
+       
         <!-- ================================== -->
         <!--   COLUMN 1: Actionable Items       -->
         <!-- ================================== -->
+
 
         <!-- Feature 5: Task Prioritization -->
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
@@ -61,14 +65,14 @@
                 </ol>
             </div>
         </div>
-        
+       
         <!-- Feature 1 & 2: Real-Time Request Feed -->
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
             <div class="flex items-center border-b border-gray-200 pb-4 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-                <h2 class="text-2xl font-semibold text-gray-800">Live Request Feed</h2>
+                <h2 class="text-2xl font-semibold text-gray-800">Live Request Feed <span class="text-base font-normal text-indigo-500">(Newest on Top)</span></h2>
             </div>
             <div id="request-feed" class="card-content flex-grow overflow-y-auto space-y-3">
                 <!-- Skeleton Loader for Feed -->
@@ -78,9 +82,11 @@
             </div>
         </div>
 
+
         <!-- ================================== -->
         <!--   COLUMN 2: Insights & Status      -->
         <!-- ================================== -->
+
 
         <!-- Feature 3: AI Insights -->
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
@@ -96,6 +102,7 @@
                 <div class="p-4 bg-slate-200 rounded-lg animate-pulse h-12 w-5/6"></div>
             </div>
         </div>
+
 
         <!-- Feature 4: Patient Wellbeing Score -->
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
@@ -135,23 +142,27 @@
             </div>
         </div>
 
+
     </div>
+
 
     <script>
         // This function runs when the page is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
 
+
             // Get references to all the dynamic elements on the page
             const taskList = document.getElementById('prioritized-tasks');
             const requestFeed = document.getElementById('request-feed');
             const aiInsights = document.getElementById('ai-insights');
-            
+           
             const statusLoader = document.getElementById('status-loader');
             const statusContent = document.getElementById('status-content');
             const wellbeingScore = document.getElementById('wellbeing-score');
             const painTrend = document.getElementById('pain-trend');
             const mobilityNeeds = document.getElementById('mobility-needs');
             const hydrationNeeds = document.getElementById('hydration-needs');
+
 
             /**
              * This is the main function.
@@ -166,21 +177,23 @@
                     }
                     const data = await response.json();
 
+
                     // --- Update each section of the dashboard ---
                     updateTasks(data.prioritized_tasks);
                     updateFeed(data.request_feed);
                     updateInsights(data.ai_insights);
                     updateWellbeing(data.wellbeing_summary);
 
+
                 } catch (error) {
                     console.error('Error fetching dashboard data:', error);
                     // Show an error on the dashboard
                     taskList.innerHTML = '<li class="text-red-600 font-medium">Error connecting to backend.</li>';
-                    requestFeed.innerHTML = '<p class="text-red-600 font-medium">Error connecting to backend.</p>';
-                    aiInsights.innerHTML = '<p class="text-red-600 font-medium">Error connecting to backend.</p>';
+                    requestFeed.innerHTML = '<p class="text-red-600 font-medium p-3 rounded-lg bg-red-100">Error connecting to backend.</p>';
+                    aiInsights.innerHTML = '<p class="text-red-600 font-medium p-3 rounded-lg bg-red-100">Error connecting to backend.</p>';
                 }
             }
-            
+           
             // Helper function to get urgency colors for Tailwind
             function getUrgencyClasses(urgency) {
                 switch (urgency.toLowerCase()) {
@@ -194,6 +207,7 @@
                         return 'border-l-4 border-gray-400 bg-gray-50';
                 }
             }
+
 
             /**
              * Updates the "Prioritized Tasks" list.
@@ -214,9 +228,11 @@
                 });
             }
 
+
             /**
-            * Updates the "Live Request Feed" log.
-            * @param {Array} feedLogs - e.g., [{log: "Pain 4/5 at 3:16 PM", urgency: "high"}, ...]
+            * UPDATED: Updates the "Live Request Feed" log.
+            * The Python backend now sends structured data with `timestamp_str`.
+            * @param {Array} feedLogs - e.g., [{request_text: "Water Request", timestamp_str: "03:16:00 PM", urgency: "high"}, ...]
             */
             function updateFeed(feedLogs) {
                 requestFeed.innerHTML = ''; // Clear the skeleton loader
@@ -224,14 +240,25 @@
                     requestFeed.innerHTML = '<p class="text-gray-500 italic">No requests yet.</p>';
                     return;
                 }
-                // Show newest requests on top
+                // The Python list is reversed before sending, so we process it normally here.
+                // The Python list itself is already chronologically ordered (newest at the end).
+                // The Python backend is designed to send the last 10 requests, with the most recent one at index 9.
                 feedLogs.reverse().forEach(log => {
-                    const p = document.createElement('p');
-                    p.textContent = log.log;
-                    p.className = `p-3 rounded-lg ${getUrgencyClasses(log.urgency)}`;
-                    requestFeed.appendChild(p);
+                    const div = document.createElement('div');
+                   
+                    // Structure the content: Request on the left, Timestamp on the right
+                    div.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">${log.request_text}</span>
+                            <span class="text-xs font-normal text-gray-700">${log.timestamp_str}</span>
+                        </div>
+                    `;
+                    // Apply urgency styling (using the `div` wrapper now)
+                    div.className = `p-3 rounded-lg border-none ${getUrgencyClasses(log.urgency)}`;
+                    requestFeed.appendChild(div);
                 });
             }
+
 
             /**
              * Updates the "AI Insights" section.
@@ -252,6 +279,7 @@
                 });
             }
 
+
             /**
              * Updates the "Patient Wellbeing Summary" card.
              * @param {Object} summary - e.g., {score: "7/10", pain_trend: "Rising", ...}
@@ -259,14 +287,17 @@
             function updateWellbeing(summary) {
                 if (!summary) return; // Don't update if no summary data
 
+
                 // Hide loader, show content
                 statusLoader.style.display = 'none';
                 statusContent.classList.remove('hidden');
+
 
                 wellbeingScore.textContent = summary.score || '--';
                 painTrend.textContent = summary.pain_trend || '--';
                 mobilityNeeds.textContent = summary.mobility || '--';
                 hydrationNeeds.textContent = summary.hydration || '--';
+
 
                 // Bonus: Add color based on pain trend
                 if (summary.pain_trend === 'Rising') {
@@ -278,15 +309,18 @@
                 }
             }
 
+
             // --- Main Execution ---
-            
+           
             // 1. Fetch data immediately when the page loads
             fetchData();
-            
-            // 2. Set up polling to fetch data every 3 seconds (3000 ms)
-            // This makes your dashboard feel "live"
+           
+            // 2. Set up polling to fetch data every 1 second (1000 ms)
             setInterval(fetchData, 1000);
         });
     </script>
 </body>
 </html>
+
+
+
