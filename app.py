@@ -2,6 +2,7 @@ import serial
 import threading
 import time
 import os
+import csv
 from flask import Flask, jsonify, send_from_directory
 
 # Import the cached version of our AI prioritizer
@@ -51,7 +52,33 @@ BUTTON_MAP = {
     "R5": "HELP! Emergency"
 }
 
+CSV_FILE = "patient_requests_week.csv"
 
+if not os.path.exists(CSV_FILE):
+    with open(CSV_FILE, mode="w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["request", "timestamp"])
+        writer.writeheader()
+else:
+    # Optional: Load existing CSV into history on startup
+    with open(CSV_FILE, mode="r", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                history.append({
+                    "request": row["request"],
+                    "timestamp": float(row["timestamp"])
+                })
+            except Exception:
+                pass  # skip bad rows
+
+def log_request_to_csv(request_text, timestamp):
+    """Append a new request to the CSV file."""
+    try:
+        with open(CSV_FILE, mode="a", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=["request", "timestamp"])
+            writer.writerow({"request": request_text, "timestamp": timestamp})
+    except Exception as e:
+        print(f"Error writing to CSV: {e}")
 # ---------------------------------------------------------
 # 3. BACKGROUND SERIAL THREAD
 # ---------------------------------------------------------
@@ -80,6 +107,7 @@ def serial_handler():
                             "timestamp": current_time
                         })
 
+                        log_request_to_csv(readable, current_time)
                         latest_led_message = line
                         print(f"[Request Logged] {line} -> {readable}")
 
