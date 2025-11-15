@@ -120,7 +120,6 @@
             const statusLoader = document.getElementById('status-loader');
             const statusContent = document.getElementById('status-content');
             const wellbeingScore = document.getElementById('wellbeing-score');
-            // UPDATED: Get reference for new 'rationale' element
             const wellbeingRationale = document.getElementById('wellbeing-rationale');
 
             let previousTasks = []; // Store the last known tasks to compare
@@ -169,7 +168,6 @@
             }
             
             // Helper function to get urgency colors for Tailwind
-            // UPDATED: Renamed 'urgency' to 'priorityLevel' for clarity, but logic is same
             function getUrgencyClasses(priorityLevel) {
                 if (!priorityLevel) return 'border-l-4 border-gray-400 bg-gray-50';
                 
@@ -186,36 +184,30 @@
             }
 
             /**
-             * UPDATED: Updates the "Prioritized Tasks" list.
+             * Updates the "Prioritized Tasks" list.
              * @param {Array} tasks - e.g., [{task_description: "Check pain", priority_level: "high"}, ...]
              */
             function updateTasks(tasks) {
                 // Ensure tasks is an array, even if null or undefined from the API
                 const currentTasks = Array.isArray(tasks) ? tasks : [];
 
-                // --- UPDATED: Text-to-Speech Logic ---
-                // Find tasks that are in the new list but were not in the previous list.
+                // --- Text-to-Speech Logic ---
                 const newTasks = currentTasks.filter(newTask => 
                     !previousTasks.some(prevTask => 
-                        // Compare 'task_description' and 'priority_level'
                         prevTask.task_description === newTask.task_description && 
                         prevTask.priority_level === newTask.priority_level
                     )
                 );
 
                 if (newTasks.length > 0) {
-                    // Announce the *highest priority* (first) new task.
                     const topNewTask = newTasks[0];
-                    const priority = topNewTask.priority_level || 'new'; // Handle missing priority
-                    // Use 'task_description' for speech
+                    const priority = topNewTask.priority_level || 'new';
                     const textToSpeak = `New ${priority} priority task: ${topNewTask.task_description}`;
                     speakText(textToSpeak);
                 }
                 
-                // Update the previous tasks list for the next check
                 previousTasks = currentTasks;
                 // --- End of TTS Logic ---
-
 
                 taskList.innerHTML = ''; // Clear the skeleton loader
                 if (currentTasks.length === 0) {
@@ -224,16 +216,14 @@
                 }
                 currentTasks.forEach(task => {
                     const li = document.createElement('li');
-                    // Use 'task_description' for display
                     li.textContent = task.task_description;
-                    // Apply urgency styling based on 'priority_level'
                     li.className = `p-3 rounded-r-md ${getUrgencyClasses(task.priority_level)}`;
                     taskList.appendChild(li);
                 });
             }
 
             /**
-            * UPDATED: Updates the "Live Request Feed" log.
+            * Updates the "Live Request Feed" log.
             * @param {Array} feedLogs - e.g., [{request_text: "Pain 4/5", timestamp_str: "03:16 PM", urgency: "high"}, ...]
             */
             function updateFeed(feedLogs) {
@@ -245,9 +235,7 @@
                 // Show newest requests on top
                 feedLogs.reverse().forEach(log => {
                     const p = document.createElement('p');
-                    // Combine timestamp and request text
                     p.innerHTML = `<span class="font-bold mr-2">[${log.timestamp_str}]</span> ${log.request_text}`;
-                    // Use the 'urgency' field from the feed object
                     p.className = `p-3 rounded-lg ${getUrgencyClasses(log.urgency)}`;
                     requestFeed.appendChild(p);
                 });
@@ -265,7 +253,6 @@
                 }
                 insights.forEach(insight => {
                     const p = document.createElement('p');
-                    // Simple icon for visual flair
                     p.innerHTML = `<span class="font-bold mr-2">💡</span> ${insight}`;
                     p.className = "p-4 bg-indigo-50 rounded-lg text-indigo-800 font-medium";
                     aiInsights.appendChild(p);
@@ -273,7 +260,7 @@
             }
 
             /**
-             * UPDATED: Updates the "Patient Wellbeing Summary" card.
+             * Updates the "Patient Wellbeing Summary" card.
              * @param {Object} summary - e.g., {score: 6, rationale: "A single food request..."}
              */
             function updateWellbeing(summary) {
@@ -294,7 +281,6 @@
             fetchData();
             
             // 2. Set up polling to fetch data every 3 seconds (3000 ms)
-            // This makes your dashboard feel "live"
             setInterval(fetchData, 3000);
         });
     </script>
