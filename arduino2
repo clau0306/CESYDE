@@ -1,6 +1,6 @@
 
 int pinNumber = 7;
-char *command = "hello";
+char *command = "REQUEST:BATHROOM";
 
 void setup() {
   pinMode(pinNumber, OUTPUT); // Replace 'pinNumber' with the actual digital pin you are using

@@ -1,5 +1,6 @@
 #include <LiquidCrystal.h>
 
+
 // LCD pin mapping for typical LCD Keypad Shield
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
@@ -34,7 +35,7 @@ void loop() {
     case 1:  // RIGHT
       lcd.clear();
       lcd.print("Bathroom Request");
-      Serial.println("hello");
+      Serial.println("REQUEST:BATHROOM");
       delay(1000);
       break;
 
