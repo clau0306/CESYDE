@@ -153,6 +153,8 @@
                     const data = await response.json();
 
                     // --- Update each section of the dashboard ---
+                    // The 'prioritized_tasks' key from your Flask app
+                    // now matches the 'prioritized_tasks' from Gemini
                     updateTasks(data.prioritized_tasks);
                     updateFeed(data.request_feed);
                     updateInsights(data.ai_insights);
@@ -167,11 +169,14 @@
                 }
             }
             
-            // Helper function to get urgency colors for Tailwind
-            function getUrgencyClasses(priorityLevel) {
-                if (!priorityLevel) return 'border-l-4 border-gray-400 bg-gray-50';
+            /** * UPDATED: Helper function to get urgency colors for Tailwind
+             * @param {string} priority - e.g., "High", "Medium", "Low"
+             */
+            function getUrgencyClasses(priority) {
+                if (!priority) return 'border-l-4 border-gray-400 bg-gray-50';
                 
-                switch (priorityLevel.toLowerCase()) {
+                // Use 'priority' (from new JSON) instead of 'priorityLevel'
+                switch (priority.toLowerCase()) {
                     case 'high':
                         return 'border-l-4 border-red-600 bg-red-50 text-red-900 font-medium';
                     case 'medium':
@@ -184,30 +189,36 @@
             }
 
             /**
-             * Updates the "Prioritized Tasks" list.
-             * @param {Array} tasks - e.g., [{task_description: "Check pain", priority_level: "high"}, ...]
+             * UPDATED: Updates the "Prioritized Tasks" list.
+             * @param {Array} tasks - e.g., [{request_type: "Bathroom Request", priority: "high"}, ...]
              */
             function updateTasks(tasks) {
                 // Ensure tasks is an array, even if null or undefined from the API
                 const currentTasks = Array.isArray(tasks) ? tasks : [];
 
-                // --- Text-to-Speech Logic ---
+                // --- UPDATED: Text-to-Speech Logic ---
+                // Find tasks that are in the new list but were not in the previous list.
                 const newTasks = currentTasks.filter(newTask => 
                     !previousTasks.some(prevTask => 
-                        prevTask.task_description === newTask.task_description && 
-                        prevTask.priority_level === newTask.priority_level
+                        // Compare 'request_type' and 'priority'
+                        prevTask.request_type === newTask.request_type && 
+                        prevTask.priority === newTask.priority
                     )
                 );
 
                 if (newTasks.length > 0) {
+                    // Announce the *highest priority* (first) new task.
                     const topNewTask = newTasks[0];
-                    const priority = topNewTask.priority_level || 'new';
-                    const textToSpeak = `New ${priority} priority task: ${topNewTask.task_description}`;
+                    // Use 'priority' and 'request_type'
+                    const priority = topNewTask.priority || 'new';
+                    const textToSpeak = `New ${priority} priority task: ${topNewTask.request_type}`;
                     speakText(textToSpeak);
                 }
                 
+                // Update the previous tasks list for the next check
                 previousTasks = currentTasks;
                 // --- End of TTS Logic ---
+
 
                 taskList.innerHTML = ''; // Clear the skeleton loader
                 if (currentTasks.length === 0) {
@@ -216,14 +227,17 @@
                 }
                 currentTasks.forEach(task => {
                     const li = document.createElement('li');
-                    li.textContent = task.task_description;
-                    li.className = `p-3 rounded-r-md ${getUrgencyClasses(task.priority_level)}`;
+                    // Use 'request_type' for display
+                    li.textContent = task.request_type;
+                    // Apply urgency styling based on 'priority'
+                    li.className = `p-3 rounded-r-md ${getUrgencyClasses(task.priority)}`;
                     taskList.appendChild(li);
                 });
             }
 
             /**
             * Updates the "Live Request Feed" log.
+            * (No change was needed here, as this data is formatted by Flask)
             * @param {Array} feedLogs - e.g., [{request_text: "Pain 4/5", timestamp_str: "03:16 PM", urgency: "high"}, ...]
             */
             function updateFeed(feedLogs) {
@@ -236,13 +250,14 @@
                 feedLogs.reverse().forEach(log => {
                     const p = document.createElement('p');
                     p.innerHTML = `<span class="font-bold mr-2">[${log.timestamp_str}]</span> ${log.request_text}`;
-                    p.className = `p-3 rounded-lg ${getUrgencyClasses(log.urgency)}`;
+                    p.className = `p-3 rounded-lg ${getUrgencyClasses(log.urgency)}`; // Uses 'urgency' from Flask
                     requestFeed.appendChild(p);
                 });
             }
 
             /**
              * Updates the "AI Insights" section.
+             * (No change was needed here, this already supports a list of strings)
              * @param {Array} insights - e.g., ["Patient pain rose...", "Mobility needed..."]
              */
             function updateInsights(insights) {
@@ -261,6 +276,8 @@
 
             /**
              * Updates the "Patient Wellbeing Summary" card.
+             * (No change was needed. This logic correctly handles a number like 4
+             * by turning it into "4 / 10", fixing the "2/10 / 10" bug)
              * @param {Object} summary - e.g., {score: 6, rationale: "A single food request..."}
              */
             function updateWellbeing(summary) {
