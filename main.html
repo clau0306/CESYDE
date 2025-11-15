@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard</title>
-    <!-- We'll use Tailwind CSS for a clean, modern dashboard look -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +13,6 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-
 
         /* Custom scrollbar for a cleaner look in feed/task lists */
         .card-content::-webkit-scrollbar {
@@ -35,19 +33,10 @@
 </head>
 <body class="bg-slate-100 p-4 md:p-8">
 
-
     <h1 class="text-3xl md:text-4xl font-bold text-center text-indigo-700 mb-10">Patient Wellbeing Dashboard</h1>
 
-
-    <!-- Main grid layout for the dashboard -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-       
-        <!-- ================================== -->
-        <!--   COLUMN 1: Actionable Items       -->
-        <!-- ================================== -->
-
-
-        <!-- Feature 5: Task Prioritization -->
+        
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
             <div class="flex items-center border-b border-gray-200 pb-4 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -57,7 +46,6 @@
             </div>
             <div class="card-content flex-grow overflow-y-auto">
                 <ol id="prioritized-tasks" class="list-decimal list-inside space-y-3">
-                    <!-- Skeleton Loader for Tasks -->
                     <li class="h-7 bg-slate-200 rounded-md animate-pulse w-full"></li>
                     <li class="h-7 bg-slate-200 rounded-md animate-pulse w-5/6"></li>
                     <li class="h-7 bg-slate-200 rounded-md animate-pulse w-full"></li>
@@ -65,30 +53,21 @@
                 </ol>
             </div>
         </div>
-       
-        <!-- Feature 1 & 2: Real-Time Request Feed -->
+        
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
             <div class="flex items-center border-b border-gray-200 pb-4 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-                <h2 class="text-2xl font-semibold text-gray-800">Live Request Feed <span class="text-base font-normal text-indigo-500">(Newest on Top)</span></h2>
+                <h2 class="text-2xl font-semibold text-gray-800">Live Request Feed</h2>
             </div>
             <div id="request-feed" class="card-content flex-grow overflow-y-auto space-y-3">
-                <!-- Skeleton Loader for Feed -->
                 <div class="p-3 bg-slate-200 rounded-lg animate-pulse h-10 w-full"></div>
                 <div class="p-3 bg-slate-200 rounded-lg animate-pulse h-10 w-full"></div>
                 <div class="p-3 bg-slate-200 rounded-lg animate-pulse h-10 w-full"></div>
             </div>
         </div>
 
-
-        <!-- ================================== -->
-        <!--   COLUMN 2: Insights & Status      -->
-        <!-- ================================== -->
-
-
-        <!-- Feature 3: AI Insights -->
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
             <div class="flex items-center border-b border-gray-200 pb-4 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -97,72 +76,69 @@
                 <h2 class="text-2xl font-semibold text-gray-800">AI Insights & Warnings</h2>
             </div>
             <div id="ai-insights" class="card-content flex-grow overflow-y-auto space-y-4">
-                <!-- Skeleton Loader for Insights -->
                 <div class="p-4 bg-slate-200 rounded-lg animate-pulse h-12 w-full"></div>
                 <div class="p-4 bg-slate-200 rounded-lg animate-pulse h-12 w-5/6"></div>
             </div>
         </div>
 
-
-        <!-- Feature 4: Patient Wellbeing Score -->
         <div class="bg-white shadow-xl rounded-xl p-6 md:p-8 flex flex-col h-[450px]">
             <div class="flex items-center border-b border-gray-200 pb-4 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
-                <h2 class="text-2xl font-semibold text-gray-800">Patient Wellbeing Summary</h2>
+                <h2 class="text-2xl font-semibold text-gray-800">AI Wellbeing Summary</h2>
             </div>
             <div id="patient-status" class="card-content flex-grow space-y-6 pt-4">
-                <!-- Skeleton Loader for Status -->
                 <div id="status-loader">
-                    <div class="h-8 bg-slate-200 rounded-md animate-pulse w-full mb-4"></div>
-                    <div class="h-8 bg-slate-200 rounded-md animate-pulse w-3/4 mb-4"></div>
-                    <div class="h-8 bg-slate-200 rounded-md animate-pulse w-5/6 mb-4"></div>
-                    <div class="h-8 bg-slate-200 rounded-md animate-pulse w-full"></div>
+                    <div class="h-10 bg-slate-200 rounded-md animate-pulse w-full mb-4"></div>
+                    <div class="h-24 bg-slate-200 rounded-md animate-pulse w-full"></div>
                 </div>
-                <!-- Actual Content (hidden until data loads) -->
-                <div id="status-content" class="hidden">
-                    <div class="flex justify-between text-lg">
-                        <span class="font-medium text-gray-600">Wellbeing Score:</span>
-                        <span id="wellbeing-score" class="font-bold text-blue-600">--</span>
+                <div id="status-content" class="hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-medium text-gray-600">Wellbeing Score:</span>
+                        <span id="wellbeing-score" class="text-3xl font-bold text-indigo-600">--</span>
                     </div>
-                    <div class="flex justify-between text-lg">
-                        <span class="font-medium text-gray-600">Pain Trend:</span>
-                        <span id="pain-trend" class="font-bold text-gray-800">--</span>
-                    </div>
-                    <div class="flex justify-between text-lg">
-                        <span class="font-medium text-gray-600">Mobility Needs:</span>
-                        <span id="mobility-needs" class="font-bold text-gray-800">--</span>
-                    </div>
-                    <div class="flex justify-between text-lg">
-                        <span class="font-medium text-gray-600">Hydration Needs:</span>
-                        <span id="hydration-needs" class="font-bold text-gray-800">--</span>
+                    <div>
+                        <span class="text-lg font-medium text-gray-600">AI Rationale:</span>
+                        <p id="wellbeing-rationale" class="text-gray-800 mt-2 p-3 bg-slate-50 rounded-md">--</p>
                     </div>
                 </div>
             </div>
         </div>
 
-
     </div>
-
 
     <script>
         // This function runs when the page is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
 
-
             // Get references to all the dynamic elements on the page
             const taskList = document.getElementById('prioritized-tasks');
             const requestFeed = document.getElementById('request-feed');
             const aiInsights = document.getElementById('ai-insights');
-           
+            
             const statusLoader = document.getElementById('status-loader');
             const statusContent = document.getElementById('status-content');
             const wellbeingScore = document.getElementById('wellbeing-score');
-            const painTrend = document.getElementById('pain-trend');
-            const mobilityNeeds = document.getElementById('mobility-needs');
-            const hydrationNeeds = document.getElementById('hydration-needs');
+            // UPDATED: Get reference for new 'rationale' element
+            const wellbeingRationale = document.getElementById('wellbeing-rationale');
 
+            let previousTasks = []; // Store the last known tasks to compare
+
+            /**
+             * Speaks the given text using the browser's TTS engine.
+             * @param {string} text - The text to be spoken.
+             */
+            function speakText(text) {
+                // Check if speech synthesis is supported
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'en-US'; // Set language for better pronunciation
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    console.warn('Speech synthesis not supported by this browser.');
+                }
+            }
 
             /**
              * This is the main function.
@@ -177,26 +153,27 @@
                     }
                     const data = await response.json();
 
-
                     // --- Update each section of the dashboard ---
                     updateTasks(data.prioritized_tasks);
                     updateFeed(data.request_feed);
                     updateInsights(data.ai_insights);
                     updateWellbeing(data.wellbeing_summary);
 
-
                 } catch (error) {
                     console.error('Error fetching dashboard data:', error);
                     // Show an error on the dashboard
                     taskList.innerHTML = '<li class="text-red-600 font-medium">Error connecting to backend.</li>';
-                    requestFeed.innerHTML = '<p class="text-red-600 font-medium p-3 rounded-lg bg-red-100">Error connecting to backend.</p>';
-                    aiInsights.innerHTML = '<p class="text-red-600 font-medium p-3 rounded-lg bg-red-100">Error connecting to backend.</p>';
+                    requestFeed.innerHTML = '<p class="text-red-600 font-medium">Error connecting to backend.</p>';
+                    aiInsights.innerHTML = '<p class="text-red-600 font-medium">Error connecting to backend.</p>';
                 }
             }
-           
+            
             // Helper function to get urgency colors for Tailwind
-            function getUrgencyClasses(urgency) {
-                switch (urgency.toLowerCase()) {
+            // UPDATED: Renamed 'urgency' to 'priorityLevel' for clarity, but logic is same
+            function getUrgencyClasses(priorityLevel) {
+                if (!priorityLevel) return 'border-l-4 border-gray-400 bg-gray-50';
+                
+                switch (priorityLevel.toLowerCase()) {
                     case 'high':
                         return 'border-l-4 border-red-600 bg-red-50 text-red-900 font-medium';
                     case 'medium':
@@ -208,31 +185,56 @@
                 }
             }
 
-
             /**
-             * Updates the "Prioritized Tasks" list.
-             * @param {Array} tasks - e.g., [{task: "Check pain", urgency: "high"}, ...]
+             * UPDATED: Updates the "Prioritized Tasks" list.
+             * @param {Array} tasks - e.g., [{task_description: "Check pain", priority_level: "high"}, ...]
              */
             function updateTasks(tasks) {
+                // Ensure tasks is an array, even if null or undefined from the API
+                const currentTasks = Array.isArray(tasks) ? tasks : [];
+
+                // --- UPDATED: Text-to-Speech Logic ---
+                // Find tasks that are in the new list but were not in the previous list.
+                const newTasks = currentTasks.filter(newTask => 
+                    !previousTasks.some(prevTask => 
+                        // Compare 'task_description' and 'priority_level'
+                        prevTask.task_description === newTask.task_description && 
+                        prevTask.priority_level === newTask.priority_level
+                    )
+                );
+
+                if (newTasks.length > 0) {
+                    // Announce the *highest priority* (first) new task.
+                    const topNewTask = newTasks[0];
+                    const priority = topNewTask.priority_level || 'new'; // Handle missing priority
+                    // Use 'task_description' for speech
+                    const textToSpeak = `New ${priority} priority task: ${topNewTask.task_description}`;
+                    speakText(textToSpeak);
+                }
+                
+                // Update the previous tasks list for the next check
+                previousTasks = currentTasks;
+                // --- End of TTS Logic ---
+
+
                 taskList.innerHTML = ''; // Clear the skeleton loader
-                if (!tasks || tasks.length === 0) {
+                if (currentTasks.length === 0) {
                     taskList.innerHTML = '<li class="text-gray-500 italic">No tasks pending.</li>';
                     return;
                 }
-                tasks.forEach(task => {
+                currentTasks.forEach(task => {
                     const li = document.createElement('li');
-                    li.textContent = task.task;
-                    // Apply urgency styling
-                    li.className = `p-3 rounded-r-md ${getUrgencyClasses(task.urgency)}`;
+                    // Use 'task_description' for display
+                    li.textContent = task.task_description;
+                    // Apply urgency styling based on 'priority_level'
+                    li.className = `p-3 rounded-r-md ${getUrgencyClasses(task.priority_level)}`;
                     taskList.appendChild(li);
                 });
             }
 
-
             /**
             * UPDATED: Updates the "Live Request Feed" log.
-            * The Python backend now sends structured data with `timestamp_str`.
-            * @param {Array} feedLogs - e.g., [{request_text: "Water Request", timestamp_str: "03:16:00 PM", urgency: "high"}, ...]
+            * @param {Array} feedLogs - e.g., [{request_text: "Pain 4/5", timestamp_str: "03:16 PM", urgency: "high"}, ...]
             */
             function updateFeed(feedLogs) {
                 requestFeed.innerHTML = ''; // Clear the skeleton loader
@@ -240,25 +242,16 @@
                     requestFeed.innerHTML = '<p class="text-gray-500 italic">No requests yet.</p>';
                     return;
                 }
-                // The Python list is reversed before sending, so we process it normally here.
-                // The Python list itself is already chronologically ordered (newest at the end).
-                // The Python backend is designed to send the last 10 requests, with the most recent one at index 9.
+                // Show newest requests on top
                 feedLogs.reverse().forEach(log => {
-                    const div = document.createElement('div');
-                   
-                    // Structure the content: Request on the left, Timestamp on the right
-                    div.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold">${log.request_text}</span>
-                            <span class="text-xs font-normal text-gray-700">${log.timestamp_str}</span>
-                        </div>
-                    `;
-                    // Apply urgency styling (using the `div` wrapper now)
-                    div.className = `p-3 rounded-lg border-none ${getUrgencyClasses(log.urgency)}`;
-                    requestFeed.appendChild(div);
+                    const p = document.createElement('p');
+                    // Combine timestamp and request text
+                    p.innerHTML = `<span class="font-bold mr-2">[${log.timestamp_str}]</span> ${log.request_text}`;
+                    // Use the 'urgency' field from the feed object
+                    p.className = `p-3 rounded-lg ${getUrgencyClasses(log.urgency)}`;
+                    requestFeed.appendChild(p);
                 });
             }
-
 
             /**
              * Updates the "AI Insights" section.
@@ -279,48 +272,31 @@
                 });
             }
 
-
             /**
-             * Updates the "Patient Wellbeing Summary" card.
-             * @param {Object} summary - e.g., {score: "7/10", pain_trend: "Rising", ...}
+             * UPDATED: Updates the "Patient Wellbeing Summary" card.
+             * @param {Object} summary - e.g., {score: 6, rationale: "A single food request..."}
              */
             function updateWellbeing(summary) {
                 if (!summary) return; // Don't update if no summary data
-
 
                 // Hide loader, show content
                 statusLoader.style.display = 'none';
                 statusContent.classList.remove('hidden');
 
-
-                wellbeingScore.textContent = summary.score || '--';
-                painTrend.textContent = summary.pain_trend || '--';
-                mobilityNeeds.textContent = summary.mobility || '--';
-                hydrationNeeds.textContent = summary.hydration || '--';
-
-
-                // Bonus: Add color based on pain trend
-                if (summary.pain_trend === 'Rising') {
-                    painTrend.className = 'font-bold text-red-600';
-                } else if (summary.pain_trend === 'Falling') {
-                    painTrend.className = 'font-bold text-green-600';
-                } else {
-                    painTrend.className = 'font-bold text-gray-800';
-                }
+                // Update score and rationale
+                wellbeingScore.textContent = summary.score !== undefined ? `${summary.score} / 10` : '--';
+                wellbeingRationale.textContent = summary.rationale || '--';
             }
 
-
             // --- Main Execution ---
-           
+            
             // 1. Fetch data immediately when the page loads
             fetchData();
-           
-            // 2. Set up polling to fetch data every 1 second (1000 ms)
-            setInterval(fetchData, 1000);
+            
+            // 2. Set up polling to fetch data every 3 seconds (3000 ms)
+            // This makes your dashboard feel "live"
+            setInterval(fetchData, 3000);
         });
     </script>
 </body>
 </html>
-
-
-
