@@ -1,0 +1,27 @@
+
+int pinNumber = 7;
+char *command = "hello";
+
+void setup() {
+  pinMode(pinNumber, OUTPUT); // Replace 'pinNumber' with the actual digital pin you are using
+  Serial.begin(9600); // Start serial communication at 9600 baud
+}
+
+void loop() {
+  // .// digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
+  // delay(5000);
+  // digitalWrite(pinNumber, LOW);  // Turn the pin LOW
+  // delay(5000);
+  if (Serial.available() > 0) {
+    String incomingString = Serial.readStringUntil('\n'); // Read until newline
+    Serial.print("Received: ");
+    Serial.println(incomingString);
+    if (incomingString.equals(command)) {
+      Serial.println("Command entered");
+      digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
+      delay(5000);
+      digitalWrite(pinNumber, LOW);  // Turn the pin LOW
+    }
+  }
+
+}

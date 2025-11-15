@@ -1,0 +1,72 @@
+#include <LiquidCrystal.h>
+
+// LCD pin mapping for typical LCD Keypad Shield
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+
+// Button analog input
+#define KEYPAD A0
+
+// Function to read which button is pressed
+int readButton() {
+  int x = analogRead(KEYPAD);
+
+  if (x < 50)   return 1;  // RIGHT
+  if (x < 200)  return 2;  // UP
+  if (x < 400)  return 3;  // DOWN
+  if (x < 600)  return 4;  // LEFT
+  if (x < 800)  return 5;  // SELECT
+
+  return 0;  // NONE
+}
+
+void setup() {
+  lcd.begin(16, 2);
+  lcd.print("Patient Device");
+  delay(1500);
+  lcd.clear();
+  Serial.begin(9600);
+}
+
+void loop() {
+  int key = readButton();
+  
+  switch (key) {
+    case 1:  // RIGHT
+      lcd.clear();
+      lcd.print("Bathroom Request");
+      Serial.println("hello");
+      delay(1000);
+      break;
+
+    case 2:  // UP
+      lcd.clear();
+      lcd.print("Water Request");
+      delay(1000);
+      break;
+
+    case 3:  // DOWN
+      lcd.clear();
+      lcd.print("Food Request");
+      delay(1000);
+      break;
+
+    case 4:  // LEFT
+      lcd.clear();
+      lcd.print("Blanket Request");
+      delay(1000);
+      break;
+
+    case 5:  // SELECT
+      lcd.clear();
+      lcd.print("HELP! Emergency");
+      delay(2000);
+      break;
+  }
+
+  // Idle message
+  lcd.setCursor(0, 0);
+  lcd.print("Select Request ");
+  lcd.setCursor(0, 1);
+  lcd.print("Use Buttons... ");
+}
+
