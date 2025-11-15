@@ -12,16 +12,19 @@ void loop() {
   // delay(5000);
   // digitalWrite(pinNumber, LOW);  // Turn the pin LOW
   // delay(5000);
-  if (Serial.available() > 0) {
-    String incomingString = Serial.readStringUntil('\n'); // Read until newline
-    Serial.print("Received: ");
-    Serial.println(incomingString);
-    if (incomingString.equals(command)) {
+  if (incomingString.equals(command)) {
       Serial.println("Command entered");
       digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
-      delay(5000);
+      delay(1000);
       digitalWrite(pinNumber, LOW);  // Turn the pin LOW
+      delay(1000);
+      digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
+      delay(1000);
+      digitalWrite(pinNumber, LOW); // Turn the pin HIGH
+      delay(1000);
+      digitalWrite(pinNumber, HIGH); // Turn the pin HIGH
+      delay(1000);
+      digitalWrite(pinNumber, LOW); // Turn the pin HIGH
     }
-  }
 
 }
