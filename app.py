@@ -3,6 +3,7 @@ import threading
 import time
 import os
 from flask import Flask, jsonify, send_from_directory
+from ai_prioritizer import get_ai_prioritized_tasks
 
 
 # ---------------------------------------------------------
@@ -169,10 +170,11 @@ def dashboard_data():
     """ Returns the current dashboard data, including structured history with timestamps. """
    
     # Prioritize latest requests (last 5) - turn into tasks
-    prioritized_tasks = [
-        {"task": f"Handle {req['request']}", "urgency": "high"}
-        for req in history[-5:]
-    ]
+    ai_output = get_ai_prioritized_tasks(history)
+
+    prioritized_tasks = ai_output.get("prioritized_tasks", [])
+    ai_insights = ai_output.get("ai_insights", [])
+    wellbeing_summary = ai_output.get("wellbeing_summary", {})
 
 
     # Live request feed (last 10) - Now sending structured data with formatted timestamp
